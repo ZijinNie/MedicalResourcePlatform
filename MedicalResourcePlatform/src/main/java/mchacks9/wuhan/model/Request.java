@@ -24,6 +24,11 @@ public class Request {
 	private FulfillStatus fulfillStatus;
 	private List<ItemEntry> items;
 	
+	public Request() {
+		super();
+		this.rid = new Random(124).nextLong();
+	}
+	
 	public Request(Hospital hospital, Time posttime, EmergencyStatus emerStatus) {
 		super();
 		this.rid = new Random(124).nextLong();

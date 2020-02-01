@@ -17,6 +17,11 @@ public class Item {
 		this.name = name;
 		this.description = description;
 	}
+	public Item() {
+		this.iid = new Random(658).nextLong();
+
+	}
+	
 	public String getName() {
 		return name;
 	}

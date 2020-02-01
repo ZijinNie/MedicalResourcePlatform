@@ -21,6 +21,12 @@ public class ItemEntry {
 		this.quantity = quantity;
 	}
 	
+	public ItemEntry() {
+		super();
+		this.ieid = new Random().nextLong();
+	}
+	
+	
 	@ManyToOne(optional = false)
 	public Item getItem() {
 		return item;

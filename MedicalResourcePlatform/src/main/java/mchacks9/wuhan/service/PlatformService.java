@@ -38,7 +38,7 @@ public class PlatformService {
 	public Hospital createHospital(String username, String password, String name, String city,String state, String strAddr,  String description, String contact) {
 		if(username == null || username.trim().length() == 0 ||password == null || password.trim().length() == 0 ||name == null || name.trim().length() == 0) {
 			throw new IllegalArgumentException("Field cannot be null");
-		}else if(hRepository.existsByName(username) || hRepository.existsByUsername(username)) {
+		}else if(hRepository.existsByName(name) || hRepository.existsByUsername(username)) {
 			throw new IllegalArgumentException("Hospital already exist");
 		}
 		

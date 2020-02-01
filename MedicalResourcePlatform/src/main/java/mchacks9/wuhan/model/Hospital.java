@@ -26,7 +26,6 @@ public class Hospital {
 		
 	}
 	public Hospital(String username, String password, String name, String city,String state, String strAddr,  String description, String contact) {
-		super();
 		this.username = username;
 		this.password = password;
 		this.city = city;
@@ -36,9 +35,10 @@ public class Hospital {
 		this.description = description;
 		this.setContact(contact);
 	}
+	
 	@Id
 	public String getUsername() {
-		return username;
+		return this.username;
 	}
 	public void setUsername(String username) {
 		
