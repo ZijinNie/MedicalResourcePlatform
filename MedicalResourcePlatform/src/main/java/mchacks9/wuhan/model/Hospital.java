@@ -1,5 +1,6 @@
 package mchacks9.wuhan.model;
 
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -11,31 +12,33 @@ import javax.persistence.OneToMany;
 @Entity
 
 public class Hospital {
-	private long hid;
 	private String username;
 	private String password;
 	private String name;
-	private String location;
+	private String city;
+	private String state;
+	private String strAddr;
 	private String description;
-	private int phonenum;
-	private Set<Request> requests;
+	private String contact;
+	private List<Request> requests;
 	
-	public Hospital(String username, String password, String name, String location, String description, int phonenum) {
+	public Hospital() {
+		
+	}
+	public Hospital(String username, String password, String name, String city,String state, String strAddr, String postalcode, String description, String contact) {
 		super();
-		this.hid = new Random(999).nextLong();
 		this.username = username;
 		this.password = password;
 		this.name = name;
-		this.location = location;
 		this.description = description;
-		this.phonenum = phonenum;
+		this.setContact(contact);
 	}
-	
+	@Id
 	public String getUsername() {
 		return username;
 	}
 	public void setUsername(String username) {
-		this.username = username;
+		
 	}
 	public String getPassword() {
 		return password;
@@ -49,37 +52,52 @@ public class Hospital {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getLocation() {
-		return location;
-	}
-	public void setLocation(String location) {
-		this.location = location;
-	}
 	public String getDescription() {
 		return description;
 	}
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public int getPhonenum() {
-		return phonenum;
-	}
-	public void setPhonenum(int phonenum) {
-		this.phonenum = phonenum;
-	}
-	@Id
-	public long getHid() {
-		return hid;
-	}
-	
+
 	@OneToMany(cascade = { CascadeType.ALL })
-	public Set<Request> getRequests() {
+	public List<Request> getRequests() {
 		return requests;
 	}
 
-	public void setRequests(Set<Request> requests) {
+	public void setRequests(List<Request> requests) {
 		this.requests = requests;
 	}
 
+	public String getCity() {
+		return city;
+	}
 
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public String getStrAddr() {
+		return strAddr;
+	}
+
+	public void setStrAddr(String strAddr) {
+		this.strAddr = strAddr;
+	}
+
+
+	public String getContact() {
+		return contact;
+	}
+
+	public void setContact(String contact) {
+		this.contact = contact;
+	}
 }

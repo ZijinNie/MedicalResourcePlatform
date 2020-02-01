@@ -1,8 +1,8 @@
 package mchacks9.wuhan.model;
 
 import java.sql.Time;
+import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -22,7 +22,7 @@ public class Request {
 	private Time posttime;
 	private EmergencyStatus emerStatus;
 	private FulfillStatus fulfillStatus;
-	private Set<ItemEntry> items;
+	private List<ItemEntry> items;
 	
 	public Request(Hospital hospital, Time posttime, EmergencyStatus emerStatus) {
 		super();
@@ -64,14 +64,17 @@ public class Request {
 		return rid;
 	}
 
+	public void setRid(long id) {
+		
+	}
 	
 	@OneToMany(cascade = { CascadeType.ALL })
-	public Set<ItemEntry> getItems() {
+	public List<ItemEntry> getItems() {
 		return items;
 	}
 
 	
-	public void setItems(Set<ItemEntry> items) {
+	public void setItems(List<ItemEntry> items) {
 		this.items = items;
 	}
 

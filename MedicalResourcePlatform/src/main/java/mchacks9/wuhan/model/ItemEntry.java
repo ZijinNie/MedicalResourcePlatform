@@ -40,6 +40,8 @@ public class ItemEntry {
 		return ieid;
 	}
 
+	public void setIeid(long id) {};
+	
 	@ManyToOne(optional = false)
 	public Request getRequest() {
 		return request;

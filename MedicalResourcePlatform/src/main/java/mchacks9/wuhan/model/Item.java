@@ -10,6 +10,7 @@ public class Item {
 	private long iid;
 	private String name;
 	private String description;
+	
 	public Item(String name, String description) {
 		super();
 		this.iid = new Random(658).nextLong();
@@ -32,4 +33,6 @@ public class Item {
 	public long getIid() {
 		return iid;
 	}
+	
+	public void setIid(long id) {}
 }
