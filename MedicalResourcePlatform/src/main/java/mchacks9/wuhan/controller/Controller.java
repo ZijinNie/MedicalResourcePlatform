@@ -12,12 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import mchacks9.wuhan.dto.HospitalDto;
-import mchacks9.wuhan.dto.ItemEntryDto;
-import mchacks9.wuhan.dto.RequestDto;
-import mchacks9.wuhan.model.Hospital;
-import mchacks9.wuhan.model.ItemEntry;
-import mchacks9.wuhan.model.Request;
+import mchacks9.wuhan.dto.*;
+import mchacks9.wuhan.model.*;
+import mchacks9.wuhan.satausEnum.*;
 import mchacks9.wuhan.service.PlatformService;
 
 @CrossOrigin(origins = "*")
