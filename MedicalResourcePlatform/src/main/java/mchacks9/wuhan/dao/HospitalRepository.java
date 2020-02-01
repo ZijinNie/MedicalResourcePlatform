@@ -5,7 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 import mchacks9.wuhan.model.Hospital;
 import mchacks9.wuhan.model.Request;
 
-public interface HospitalRepository extends CrudRepository<Hospital,String>{
+public interface HospitalRepository extends CrudRepository<Hospital,Long>{
 	Hospital findByName(String name);
 	Hospital findByUsername(String username);
 	boolean existsByName(String name);
