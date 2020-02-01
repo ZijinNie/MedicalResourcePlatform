@@ -26,7 +26,7 @@ public class Controller {
 	@Autowired
 	private PlatformService service;
 
-	@GetMapping(value = {"/requests"})
+	@GetMapping(value = {"/getAllRequests"})
 	public List<RequestDto> getAllRequests(){
 		List<RequestDto> requestDtos = new ArrayList<>();
 		for(Request r : service.getAllRequests()) {
@@ -34,6 +34,36 @@ public class Controller {
 		}
 		return requestDtos;
 	}
+	@GetMapping(value = {"/getAllHospitals"})
+	public List<HospitalDto> getAllHospitals() {
+		List<HospitalDto> hDtos = new ArrayList<>();
+		List<Hospital> hs = service.getAllHospitals();
+		for (Hospital h:hs) {
+			hDtos.add(convertDto(h));
+		}
+		return hDtos;
+	}
+	
+	@GetMapping(value = {"/getAllItems"})
+	public List<ItemDto> getAllItems() {
+		List<ItemDto> iDtos = new ArrayList<>();
+		List<Item> is = service.getAllItems();
+		for (Item i:is) {
+			iDtos.add(convertDto(i));
+		}
+		return iDtos;
+	}
+	
+	@GetMapping(value = {"/getAllItemEntrys"})
+	public List<ItemEntryDto> getAllItemEntrys() {
+		List<ItemEntryDto> ieDtos = new ArrayList<>();
+		List<ItemEntry> ies = service.getAllItemEntrys();
+		for (ItemEntry ie:ies) {
+			ieDtos.add(convertDto(ie));
+		}
+		return ieDtos;
+	}
+	
 
 	@GetMapping(value = {"/hospitals/{username}"})
 	public HospitalDto getHospital(@PathVariable("username") String username
@@ -68,7 +98,7 @@ public class Controller {
 //		RequestDto rDto = new RequestDto();
 //
 //	}
-
+	
 	@PostMapping(value = {"/register"})
 	public HospitalDto register(@RequestParam String username,
 	@RequestParam String password,
@@ -82,6 +112,7 @@ public class Controller {
 		Hospital hospital = service.createHospital(username, password, name, city, state, strAddr, description, contact);
 		return convertDto(hospital);
 	}
+	
 
 	@PostMapping(value = {"/item/{name}"})
 	public ItemDto createItem(@PathVariable(name = "name") String name, @RequestParam String description) {
@@ -89,6 +120,8 @@ public class Controller {
 		return convertDto(i);
 	}
 
+	
+	// Tool methods
 	private String convertEmerEnum(EmergencyStatus s) {
 		String res = "";
 		if (s == EmergencyStatus.LOW) {
