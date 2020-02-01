@@ -46,7 +46,9 @@ public class ItemEntry {
 		return ieid;
 	}
 
-	public void setIeid(long id) {};
+	public void setIeid(long id) {
+		this.ieid=id;
+	}
 	
 	@ManyToOne(optional = false)
 	public Request getRequest() {

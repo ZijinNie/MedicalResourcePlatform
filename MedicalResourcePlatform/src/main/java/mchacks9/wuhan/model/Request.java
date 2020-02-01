@@ -70,7 +70,7 @@ public class Request {
 	}
 
 	public void setRid(long id) {
-		
+		this.rid=id;
 	}
 	
 	@OneToMany(cascade = { CascadeType.ALL })

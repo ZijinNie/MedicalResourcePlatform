@@ -39,5 +39,7 @@ public class Item {
 		return iid;
 	}
 	
-	public void setIid(long id) {}
+	public void setIid(long id) {
+		this.iid=id;
+	}
 }

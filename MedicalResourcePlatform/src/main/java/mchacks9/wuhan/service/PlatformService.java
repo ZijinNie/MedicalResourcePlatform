@@ -101,19 +101,22 @@ public class PlatformService {
 		iRepository.save(i);
 		return i;
 	}
-
+	
+	@Transactional
 	public List<Request> getAllRequests() {
 		return toList(rRepository.findAll());
 	}
-	
+	@Transactional
 	public List<Hospital> getAllHospitals() {
 		return toList(hRepository.findAll());
 	}
 	
+	@Transactional
 	public List<Item> getAllItems() {
 		return toList(iRepository.findAll());
 	}
 	
+	@Transactional
 	public List<ItemEntry> getAllItemEntrys() {
 		return toList(ieRepository.findAll());
 	}

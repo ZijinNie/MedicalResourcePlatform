@@ -25,14 +25,11 @@ public class Hospital {
 	private List<Request> requests;
 	
 	public Hospital() {
-		this("", "", "", "", "", "", "", "");
+		
 	}
 	
 	public Hospital(String username, String password, String name, String city,String state, String strAddr,  String description, String contact) {
-		this(username, password, name, city, state, strAddr, description, contact, new ArrayList<Request>());
-	}
-	
-	public Hospital(String username, String password, String name, String city,String state, String strAddr,  String description, String contact, List<Request> requests) {
+		this.hId = new Random().nextLong();
 		this.username = username;
 		this.password = password;
 		this.city = city;
@@ -41,17 +38,31 @@ public class Hospital {
 		this.name = name;
 		this.description = description;
 		this.contact = contact;
-		this.requests = requests;
-		this.setContact(contact);
-		this.requests = requests;
-		this.hId = new Random().nextLong();
+		this.requests = new ArrayList<Request>();
+		System.out.print("Hello"+username);
 	}
+	
+//	public Hospital(String username, String password, String name, String city,String state, String strAddr,  String description, String contact, List<Request> requests) {
+//		this.username = username;
+//		this.password = password;
+//		this.city = city;
+//		this.state = state;
+//		this.strAddr = strAddr;
+//		this.name = name;
+//		this.description = description;
+//		this.contact = contact;
+//		this.requests = requests;
+//		this.setContact(contact);
+//		this.requests = requests;
+//		this.hId = new Random().nextLong();
+//		System.out.print("Hello"+username);
+//	}
 	
 	public String getUsername() {
 		return this.username;
 	}
 	public void setUsername(String username) {
-		
+		this.username = username;
 	}
 	public String getPassword() {
 		return password;
