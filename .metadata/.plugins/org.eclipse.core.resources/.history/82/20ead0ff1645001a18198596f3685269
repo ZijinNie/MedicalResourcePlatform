@@ -1,0 +1,12 @@
+package mchacks9.wuhan.dao;
+
+import org.springframework.data.repository.CrudRepository;
+
+import mchacks9.wuhan.model.Hospital;
+import mchacks9.wuhan.model.Item;
+import mchacks9.wuhan.model.Request;
+
+public interface ItemRepository extends CrudRepository<Item,Long>{
+	Item findByName(String name);
+}
+

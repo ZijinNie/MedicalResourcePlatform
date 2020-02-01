@@ -1,0 +1,5 @@
+package mchacks9.wuhan.dao;
+
+public class HospitalRepository {
+
+}

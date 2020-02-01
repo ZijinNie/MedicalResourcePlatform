@@ -1,0 +1,7 @@
+package mchacks9.wuhan.model;
+
+public class ItemEntry {
+	private long ieid;
+	private Item item;
+	private int quantity;
+}

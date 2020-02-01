@@ -1,0 +1,13 @@
+package mchacks9.wuhan;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class MedicalResourcePlatformApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(MedicalResourcePlatformApplication.class, args);
+	}
+
+}

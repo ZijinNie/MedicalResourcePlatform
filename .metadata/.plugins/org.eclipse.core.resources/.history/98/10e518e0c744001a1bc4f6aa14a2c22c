@@ -1,0 +1,7 @@
+package mchacks9.wuhan.model;
+
+public class Item {
+	private long iid;
+	private String name;
+	private String description;
+}

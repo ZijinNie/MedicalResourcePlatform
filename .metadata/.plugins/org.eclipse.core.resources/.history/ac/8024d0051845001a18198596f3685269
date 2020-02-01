@@ -1,0 +1,6 @@
+package mchacks9.wuhan.service;
+
+@Service
+public class PlatformService {
+
+}

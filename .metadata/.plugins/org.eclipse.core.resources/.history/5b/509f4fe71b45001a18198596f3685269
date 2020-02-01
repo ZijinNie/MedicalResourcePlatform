@@ -1,0 +1,40 @@
+package mchacks9.wuhan.service;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import mchacks9.wuhan.dao.HospitalRepository;
+import mchacks9.wuhan.dao.ItemEntryRepository;
+import mchacks9.wuhan.dao.ItemRepository;
+import mchacks9.wuhan.dao.RequestRepository;
+import mchacks9.wuhan.model.Hospital;
+
+@Service
+public class PlatformService {
+	
+	@Autowired
+	HospitalRepository hRepository;
+	
+	@Autowired
+	ItemRepository iRepository;
+	
+	@Autowired
+	ItemEntryRepository ieRepository;
+	
+	@Autowired
+	RequestRepository requestRepository;
+	
+	@Transactional
+	public Hospital CreateHospital(String username, String password, String name, String city,String state, String strAddr, String postalcode, String description, String contact) {
+		if(username == null || username.trim().length() == 0 ||password == null || password.trim().length() == 0 ||name == null || name.trim().length() == 0) {
+			throw new IllegalArgumentException("Field cannot be null");
+		}else if(hRepository.existsByName(username) || hRepository.existsByUsername(username)) {
+			
+		}
+		
+		Hospital h = new Hospital();
+		
+	}
+}

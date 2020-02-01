@@ -1,0 +1,18 @@
+package mchacks9.wuhan;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@RestController
+@SpringBootApplication
+public class MedicalResourcePlatformApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(MedicalResourcePlatformApplication.class, args);
+	}
+
+	@RequestMapping("/")
+	  public String greeting(){
+	    return "Hello world!";
+	  }
+}

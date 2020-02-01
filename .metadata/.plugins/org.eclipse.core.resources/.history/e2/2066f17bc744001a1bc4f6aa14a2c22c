@@ -1,0 +1,14 @@
+package mchacks9.wuhan.model;
+
+import java.sql.Time;
+
+import mchacks9.wuhan.EmergencyStatus;
+import mchacks9.wuhan.FulfillStatus;
+
+public class Request {
+	private long rid;
+	private Hospital hospital;
+	private Time posttime;
+	private EmergencyStatus emerStatus;
+	private FulfillStatus fulfillStatus;
+}

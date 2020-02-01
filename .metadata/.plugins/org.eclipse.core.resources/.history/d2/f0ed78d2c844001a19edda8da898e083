@@ -1,0 +1,5 @@
+package mchacks9.wuhan;
+
+public enum EmergencyStatus {
+	LOW, MEDIAN, HIGH
+}

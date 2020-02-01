@@ -1,0 +1,5 @@
+package mchacks9.wuhan;
+
+public enum FulfillStatus {
+	ONGOING, FULFILLED,CANCELLED;
+}
