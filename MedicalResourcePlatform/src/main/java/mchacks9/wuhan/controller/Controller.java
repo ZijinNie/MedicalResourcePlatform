@@ -25,7 +25,7 @@ import mchacks9.wuhan.service.PlatformService;
 public class Controller {
 	@Autowired
 	private PlatformService service;
-	
+
 	@GetMapping(value = {"/requests"})
 	public List<RequestDto> getAllRequests(){
 		List<RequestDto> requestDtos = new ArrayList<>();
@@ -34,17 +34,17 @@ public class Controller {
 		}
 		return requestDtos;
 	}
-	
+
 	@PostMapping(value = {"/makeRequest"})
-	public RequestDto makeRequest(@RequestParam(name = "hospitalId") String username, 
+	public RequestDto makeRequest(@RequestParam(name = "hospitalId") String username,
 			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern = "YYYY:MM:DD:HH:mm") LocalTime time,
 			@RequestParam(name = "emerStatus") String emerStatus,
 			@RequestParam(name = "fulfillStatus") String fulfillStatus,
 			@RequestParam(name = "items") List<ItemEntryDto> itemsDto) throws IllegalArgumentException{
 		Hospital h = service.getHospital(username);
-		
+
 		if(h==null) throw new IllegalArgumentException("Cannot find hospital");
-		
+
 		Request r = new Request(h, time, convertEmerStatus(emerStatus));
 		List<ItemEntry> items= new ArrayList<ItemEntry>();
 		ItemEntry i;
@@ -54,16 +54,99 @@ public class Controller {
 		}
 		return convertDto(r);
 	}
-	
+
 	@PostMapping(value = {"/makeRequest/allFilled"})
 	public RequestDto makeRequest(@RequestParam(name = "request") RequestDto rDto) throws IllegalArgumentException{
 		RequestDto rDto = new RequestDto();
-		
+
 	}
-	
+
+
+	private String convertEmerEnum(EmergencyStatus s) {
+		String res = "";
+		if (s == EmergencyStatus.LOW) {
+			res = "Low";
+		}else if (s == EmergencyStatus.MEDIAN) {
+			res = "Median";
+		}else if (s == EmergencyStatus.HIGH) {
+			res = "High";
+		}
+		return res;
+	}
+
+	private EmergencyStatus convertEmerEnum(String s) {
+		if (s == "Low") {
+			return EmergencyStatus.LOW;
+		}else if (s == "Median") {
+			return EmergencyStatus.MEDIAN;
+		}else if (s == "High") {
+			return EmergencyStatus.HIGH;
+		}else {
+			return EmergencyStatus.LOW;
+		}
+	}
+
+	private String convertFulfEnum(FulfillStatus s) {
+		String res = "";
+		if (s == FulfillStatus.CANCELLED) {
+			res = "Cancelled";
+		}else if (s == FulfillStatus.FULFILLED) {
+			res = "Fullfilled";
+		}else if (s == FulfillStatus.ONGOING) {
+			res = "Ongoing";
+		}
+		return res;
+	}
+
+	private FulfillStatus convertFulfEnum(String s) {
+		if (s == "Cancelled") {
+			return FulfillStatus.CANCELLED;
+		}else if (s == "Fullfilled") {
+			return FulfillStatus.FULFILLED;
+		}else if (s == "Ongoing") {
+			return FulfillStatus.ONGOING;
+		}else {
+			return FulfillStatus.CANCELLED;
+		}
+	}
+
 	private RequestDto convertDto(Request r) {
-		return new RequestDto();
+		List<ItemEntry> ies = r.getItems();
+		List<ItemEntryDto> ieDtos = new ArrayList<ItemEntryDto>();
+		for (ItemEntry ie: ies) {
+			ieDtos.add(convertpDto(ie));
+		}
+
+		return new RequestDto(r.getRid(),r.getPosttime(),convertEmerEnum(r.getEmerStatus()),
+				convertFulfEnum(r.getFulfillStatus()),convertDto(r.getHospital()),ieDtos);
 	}
-	
-	
+
+	private ItemEntryDto convertpDto(ItemEntry ie) {
+		return new ItemEntryDto(ie.getIeid(), ie.getQuantity());
+	}
+
+	private ItemDto convertDto(Item i) {
+		return new ItemDto(i.getIid(),i.getName(),i.getDescription());
+	}
+
+	private ItemEntryDto convertDto(ItemEntry ie) {
+		return new ItemEntryDto(ie.getIeid(), ie.getQuantity(), convertDto(ie.getItem()), convertDto(ie.getRequest()));
+	}
+
+	private HospitalDto convertDto(Hospital h) {
+		List<Request> rs = h.getRequests();
+		List<RequestDto> rDtos = new ArrayList<RequestDto>();
+		for (Request r: rs) {
+			rDtos.add(convertpDto(r));
+		}
+		return new HospitalDto(h.getUsername(), h.getPassword(), h.getName(), h.getCity(), h.getState(),
+				h.getStrAddr(), h.getDescription(), h.getContact(), rDtos);
+	}
+
+	private RequestDto convertpDto(Request r) {
+		return new RequestDto(r.getRid(),r.getPosttime(),convertEmerEnum(r.getEmerStatus()),
+				convertFulfEnum(r.getFulfillStatus()));
+	}
+
+
 }
