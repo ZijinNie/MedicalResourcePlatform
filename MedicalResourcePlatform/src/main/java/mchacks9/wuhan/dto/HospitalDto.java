@@ -27,7 +27,7 @@ public class HospitalDto {
 	
 	public HospitalDto(String username, String password, String name, String city, 
 			String state, String strAddr, String description, String contact) {
-		this(username,password,name,city,state,strAddr,description,contact, new ArrayList<RequestDto>());
+		this(username,password,name,city,state,strAddr,description,contact, null);
 	}
 	
 	

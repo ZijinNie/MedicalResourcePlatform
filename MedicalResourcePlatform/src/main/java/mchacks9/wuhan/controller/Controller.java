@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import mchacks9.wuhan.model.Request;
+import mchacks9.wuhan.dto.*;
+import mchacks9.wuhan.model.*;
+import mchacks9.wuhan.satausEnum.*;
 import mchacks9.wuhan.service.PlatformService;
 
 @CrossOrigin(origins = "*")
@@ -47,7 +49,90 @@ public class Controller {
 		
 	}
 	
+	
+	private String convertEmerEnum(EmergencyStatus s) {
+		String res = "";
+		if (s == EmergencyStatus.LOW) {
+			res = "Low";
+		}else if (s == EmergencyStatus.MEDIAN) {
+			res = "Median";
+		}else if (s == EmergencyStatus.HIGH) {
+			res = "High";
+		}
+		return res;
+	}
+	
+	private EmergencyStatus convertEmerEnum(String s) {
+		if (s == "Low") {
+			return EmergencyStatus.LOW;
+		}else if (s == "Median") {
+			return EmergencyStatus.MEDIAN;
+		}else if (s == "High") {
+			return EmergencyStatus.HIGH;
+		}else {
+			return EmergencyStatus.LOW;
+		}
+	}
+	
+	private String convertFulfEnum(FulfillStatus s) {
+		String res = "";
+		if (s == FulfillStatus.CANCELLED) {
+			res = "Cancelled";
+		}else if (s == FulfillStatus.FULFILLED) {
+			res = "Fullfilled";
+		}else if (s == FulfillStatus.ONGOING) {
+			res = "Ongoing";
+		}
+		return res;
+	}
+	
+	private FulfillStatus convertFulfEnum(String s) {
+		if (s == "Cancelled") {
+			return FulfillStatus.CANCELLED;
+		}else if (s == "Fullfilled") {
+			return FulfillStatus.FULFILLED;
+		}else if (s == "Ongoing") {
+			return FulfillStatus.ONGOING;
+		}else {
+			return FulfillStatus.CANCELLED;
+		}
+	}
+	
 	private RequestDto convertDto(Request r) {
-		return new RequestDto();
+		List<ItemEntry> ies = r.getItems();
+		List<ItemEntryDto> ieDtos = new ArrayList<ItemEntryDto>();
+		for (ItemEntry ie: ies) {
+			ieDtos.add(convertpDto(ie));
+		}
+		
+		return new RequestDto(r.getRid(),r.getPosttime(),convertEmerEnum(r.getEmerStatus()),
+				convertFulfEnum(r.getFulfillStatus()),convertDto(r.getHospital()),ieDtos);
+	}
+	
+	private ItemEntryDto convertpDto(ItemEntry ie) {
+		return new ItemEntryDto(ie.getIeid(), ie.getQuantity());
+	}
+
+	private ItemDto convertDto(Item i) {
+		return new ItemDto(i.getIid(),i.getName(),i.getDescription());
+	}
+	
+	private ItemEntryDto convertDto(ItemEntry ie) {
+		return new ItemEntryDto(ie.getIeid(), ie.getQuantity(), convertDto(ie.getItem()), convertDto(ie.getRequest()));
+	}
+	
+	private HospitalDto convertDto(Hospital h) {
+		List<Request> rs = h.getRequests();
+		List<RequestDto> rDtos = new ArrayList<RequestDto>();
+		for (Request r: rs) {
+			rDtos.add(convertpDto(r));
+		}
+		return new HospitalDto(h.getUsername(), h.getPassword(), h.getName(), h.getCity(), h.getState(), 
+				h.getStrAddr(), h.getDescription(), h.getContact(), rDtos);
+	}
+
+	private RequestDto convertpDto(Request r) {
+		return new RequestDto(r.getRid(),r.getPosttime(),convertEmerEnum(r.getEmerStatus()),
+				convertFulfEnum(r.getFulfillStatus()));
 	}
 }
