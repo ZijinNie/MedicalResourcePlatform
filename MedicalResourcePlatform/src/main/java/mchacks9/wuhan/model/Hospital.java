@@ -1,5 +1,6 @@
 package mchacks9.wuhan.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -23,9 +24,14 @@ public class Hospital {
 	private List<Request> requests;
 	
 	public Hospital() {
-		
+		this("", "", "", "", "", "", "", "");
 	}
+	
 	public Hospital(String username, String password, String name, String city,String state, String strAddr,  String description, String contact) {
+		this(username, password, name, city, state, strAddr, description, contact, new ArrayList<Request>());
+	}
+	
+	public Hospital(String username, String password, String name, String city,String state, String strAddr,  String description, String contact, List<Request> requests) {
 		this.username = username;
 		this.password = password;
 		this.city = city;
@@ -33,7 +39,8 @@ public class Hospital {
 		this.strAddr = strAddr;
 		this.name = name;
 		this.description = description;
-		this.setContact(contact);
+		this.contact = contact;
+		this.requests = requests;
 	}
 	
 	@Id
