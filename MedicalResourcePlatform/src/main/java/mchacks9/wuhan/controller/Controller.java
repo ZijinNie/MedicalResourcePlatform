@@ -37,8 +37,9 @@ public class Controller {
 
 	@GetMapping(value = {"/hospitals/{username}"})
 	public HospitalDto getHospital(@PathVariable("username") String username
-			) {
+			) throws IllegalArgumentException{
 		Hospital h = service.getHospital(username);
+		if(h == null) throw new IllegalArgumentException("Cannot find hospital");
 		return convertDto(h);
 	}
 
@@ -82,6 +83,11 @@ public class Controller {
 		return convertDto(hospital);
 	}
 
+	@PostMapping(value = {"/item/{name}"})
+	public ItemDto createItem(@PathVariable(name = "name") String name, @RequestParam String description) {
+		Item i =service.createItem(name, description);
+		return convertDto(i);
+	}
 
 	private String convertEmerEnum(EmergencyStatus s) {
 		String res = "";

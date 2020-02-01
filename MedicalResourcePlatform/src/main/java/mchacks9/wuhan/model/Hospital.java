@@ -43,6 +43,7 @@ public class Hospital {
 		this.contact = contact;
 		this.requests = requests;
 		this.setContact(contact);
+		this.requests = requests;
 		this.hId = new Random().nextLong();
 	}
 	
