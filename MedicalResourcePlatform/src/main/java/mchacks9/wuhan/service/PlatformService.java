@@ -106,6 +106,18 @@ public class PlatformService {
 		return toList(rRepository.findAll());
 	}
 	
+	public List<Hospital> getAllHospitals() {
+		return toList(hRepository.findAll());
+	}
+	
+	public List<Item> getAllItems() {
+		return toList(iRepository.findAll());
+	}
+	
+	public List<ItemEntry> getAllItemEntrys() {
+		return toList(ieRepository.findAll());
+	}
+	
 	private <T> List<T> toList(Iterable<T> iterable) {
 		List<T> resultList = new ArrayList<T>();
 		for (T t : iterable) {
