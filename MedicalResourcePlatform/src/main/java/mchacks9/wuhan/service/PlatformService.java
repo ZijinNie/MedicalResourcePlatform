@@ -1,6 +1,7 @@
 package mchacks9.wuhan.service;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -86,12 +87,24 @@ public class PlatformService {
 	}
 	
 	@Transactional
-	public Item createItem(String name, String description) {
+	public Item createItem(String name, String description) {	
 		if(name==null || description == null) {
 			throw new IllegalArgumentException("Field invalid");
 		}
 		Item i = new Item(name, description);
 		iRepository.save(i);
 		return i;
+	}
+
+	public List<Request> getAllRequests() {
+		return toList(rRepository.findAll());
+	}
+	
+	private <T> List<T> toList(Iterable<T> iterable) {
+		List<T> resultList = new ArrayList<T>();
+		for (T t : iterable) {
+			resultList.add(t);
+		}
+		return resultList;
 	}
 }
