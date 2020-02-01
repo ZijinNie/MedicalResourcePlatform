@@ -35,14 +35,14 @@ public class PlatformService {
 	RequestRepository rRepository;
 	
 	@Transactional
-	public Hospital createHospital(String username, String password, String name, String city,String state, String strAddr, String postalcode, String description, String contact) {
+	public Hospital createHospital(String username, String password, String name, String city,String state, String strAddr,  String description, String contact) {
 		if(username == null || username.trim().length() == 0 ||password == null || password.trim().length() == 0 ||name == null || name.trim().length() == 0) {
 			throw new IllegalArgumentException("Field cannot be null");
 		}else if(hRepository.existsByName(username) || hRepository.existsByUsername(username)) {
 			throw new IllegalArgumentException("Hospital already exist");
 		}
 		
-		Hospital h = new Hospital(username, password, name, city, state, strAddr,postalcode,description,contact);
+		Hospital h = new Hospital(username, password, name, city, state, strAddr,description,contact);
 		hRepository.save(h);
 		return h;
 	}
@@ -63,6 +63,12 @@ public class PlatformService {
 		}
 		Hospital h = hRepository.findByName(name);
 		return h;
+	}
+	
+	@Transactional
+	public ItemEntry getItemEntry(long id) {
+		ItemEntry ie = ieRepository.findByIeid(id);
+		return ie;
 	}
 	
 	@Transactional

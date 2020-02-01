@@ -12,6 +12,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import mchacks9.wuhan.dto.HospitalDto;
+import mchacks9.wuhan.dto.ItemEntryDto;
+import mchacks9.wuhan.dto.RequestDto;
+import mchacks9.wuhan.model.Hospital;
+import mchacks9.wuhan.model.ItemEntry;
 import mchacks9.wuhan.model.Request;
 import mchacks9.wuhan.service.PlatformService;
 
@@ -31,14 +36,23 @@ public class Controller {
 	}
 	
 	@PostMapping(value = {"/makeRequest"})
-	public RequestDto makeRequest(@RequestParam(name = "hospital") HospitalDto hDto, 
+	public RequestDto makeRequest(@RequestParam(name = "hospitalId") String username, 
 			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern = "YYYY:MM:DD:HH:mm") LocalTime time,
 			@RequestParam(name = "emerStatus") String emerStatus,
 			@RequestParam(name = "fulfillStatus") String fulfillStatus,
-			@RequestParam(name = "items") List<ItemEntryDto> items) throws IllegalArgumentException{
-		RequestDto rDto = new RequestDto();
-		rDto.set
+			@RequestParam(name = "items") List<ItemEntryDto> itemsDto) throws IllegalArgumentException{
+		Hospital h = service.getHospital(username);
 		
+		if(h==null) throw new IllegalArgumentException("Cannot find hospital");
+		
+		Request r = new Request(h, time, convertEmerStatus(emerStatus));
+		List<ItemEntry> items= new ArrayList<ItemEntry>();
+		ItemEntry i;
+		for(ItemEntryDto item: itemsDto) {
+			i = service.getItemEntry(item.getIeid());
+			items.add(i);
+		}
+		return convertDto(r);
 	}
 	
 	@PostMapping(value = {"/makeRequest/allFilled"})
@@ -50,4 +64,6 @@ public class Controller {
 	private RequestDto convertDto(Request r) {
 		return new RequestDto();
 	}
+	
+	
 }

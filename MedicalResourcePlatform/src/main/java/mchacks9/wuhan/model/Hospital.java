@@ -25,10 +25,13 @@ public class Hospital {
 	public Hospital() {
 		
 	}
-	public Hospital(String username, String password, String name, String city,String state, String strAddr, String postalcode, String description, String contact) {
+	public Hospital(String username, String password, String name, String city,String state, String strAddr,  String description, String contact) {
 		super();
 		this.username = username;
 		this.password = password;
+		this.city = city;
+		this.state = state;
+		this.strAddr = strAddr;
 		this.name = name;
 		this.description = description;
 		this.setContact(contact);

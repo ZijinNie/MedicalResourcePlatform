@@ -10,5 +10,6 @@ import mchacks9.wuhan.model.Request;
 
 public interface ItemEntryRepository extends CrudRepository<ItemEntry,Long>{
 	List<ItemEntry> findByRequest(Request request);
+	ItemEntry findByIeid(long id);
 }
 
