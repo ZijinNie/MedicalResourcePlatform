@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 @Entity
 
 public class Hospital {
+	private long hId;
 	private String username;
 	private String password;
 	private String name;
@@ -41,9 +42,10 @@ public class Hospital {
 		this.description = description;
 		this.contact = contact;
 		this.requests = requests;
+		this.setContact(contact);
+		this.hId = new Random().nextLong();
 	}
 	
-	@Id
 	public String getUsername() {
 		return this.username;
 	}
@@ -109,5 +111,12 @@ public class Hospital {
 
 	public void setContact(String contact) {
 		this.contact = contact;
+	}
+	@Id
+	public long gethId() {
+		return hId;
+	}
+	public void sethId(long hId) {
+		this.hId = hId;
 	}
 }
