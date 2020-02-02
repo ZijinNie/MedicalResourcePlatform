@@ -844,3 +844,25 @@ java.lang.InterruptedException
 	at org.eclipse.jdt.internal.ui.text.java.hover.BestMatchHover.getHoverInfo2(BestMatchHover.java:133)
 	at org.eclipse.jdt.internal.ui.text.java.hover.JavaEditorTextHoverProxy.getHoverInfo2(JavaEditorTextHoverProxy.java:89)
 	at org.eclipse.jface.text.TextViewerHoverManager$4.run(TextViewerHoverManager.java:169)
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-02 02:18:47.282
+!MESSAGE Preparing classpath changed notification MedicalSupplyPlatform-Backend
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-02 02:18:47.283
+!MESSAGE exists = true open = true => deleted = false
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-02 02:18:47.305
+!MESSAGE classpath=111 entries
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-02 02:18:47.322
+!MESSAGE buffering callback sts4.classpath.BbjAuAIp MedicalSupplyPlatform-Backend false 111
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-02 02:18:47.323
+!MESSAGE executing callback sts4.classpath.BbjAuAIp 1 batched events
+
+!ENTRY org.springframework.tooling.ls.eclipse.commons 1 0 2020-02-02 02:18:47.371
+!MESSAGE executing callback sts4.classpath.BbjAuAIp SUCCESS [done]
+
+!ENTRY org.eclipse.ui.navigator 4 0 2020-02-02 02:22:29.411
+!MESSAGE Cannot find navigator content extension (using triggerPoints) for object "<null>" parent path: "medicalsupplyplatform.controller [in src/main/java [in MedicalSupplyPlatform-Backend]]
+  Controller.java (not open)".  Check that you have an expression for this object in a navigatorContent triggerPoints or enablement.
