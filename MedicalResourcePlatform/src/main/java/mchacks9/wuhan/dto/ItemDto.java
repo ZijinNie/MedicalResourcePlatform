@@ -1,33 +1,34 @@
 package mchacks9.wuhan.dto;
 
 public class ItemDto {
-	private long iid;
+//	private long iid;
 	private String name;
 	private String description;
 	// Constructors
-	public ItemDto(long iid) {
-		this(iid,"");
+
+	public ItemDto() {
+		
 	}
 	
-	public ItemDto(long iid, String name) {
-		this(iid,name,"");
+	public ItemDto(String name) {
+		this(name,"");
 	}
 	
-	public ItemDto(long iid, String name, String description) {
-		this.iid = iid;
+	public ItemDto( String name, String description) {
 		this.name = name;
 		this.description = description;
 	}
 	
 	
+	
 	//Getter and Setters
-	public long getIid() {
-		return iid;
-	}
-
-	public void setIid(long iid) {
-		this.iid = iid;
-	}
+//	public long getIid() {
+//		return iid;
+//	}
+//
+//	public void setIid(long iid) {
+//		this.iid = iid;
+//	}
 	public String getName() {
 		return name;
 	}

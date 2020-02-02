@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -72,24 +73,101 @@ public class Controller {
 		if(h == null) throw new IllegalArgumentException("Cannot find hospital");
 		return convertDto(h);
 	}
+	
+	@PostMapping(value = {"/requestAuto"}, headers="Accept=application/json")
+	public RequestDto makeAutoRequest(
+			@RequestBody RequestForm form)throws IllegalArgumentException{
+		String city = form.getCity();
+		String contact = form.getContact();
+		String hospital = form.getHospital();
+		String address = form.getAddress();
+		String state = form.getState();
+		String timeString = form.getTime();
+		
+		System.out.print(timeString);
+		
+		Time time = java.sql.Time.valueOf(timeString);
+		List<ItemEntryDto> itemsDto = form.getItemEntry();
+		if( itemsDto == null) {
+			throw new IllegalArgumentException("null items");
+		}
+		Hospital h ;
+
+		h= service.getHospital(hospital);
+		if(h==null) {
+			h = service.createHospital(hospital, hospital, hospital, city, state, address, hospital, contact);
+		}
+
+		List<ItemEntry> itemEntry = new ArrayList<ItemEntry>();
+		ItemEntry ie;
+		Item i;
+		int count = 0;
+		for(ItemEntryDto ieDto : itemsDto) {
+			ItemDto iDto = ieDto.getItem();
+			
+			i= service.getItemByName(iDto.getName());
+			if(i == null) {
+				i = service.createItem(iDto.getName(),iDto.getDescription());
+			}
+			ie = service.createItemEntry(i, ieDto.getQuantity());
+			count += ieDto.getQuantity();
+			itemEntry.add(ie);
+		}
+		
+		EmergencyStatus emr ;
+		if(count < 5000) {
+			emr = EmergencyStatus.LOW;
+		}else if(count < 20000) {
+			emr = EmergencyStatus.MEDIAN;
+		}else emr = EmergencyStatus.HIGH;
+		
+		Request r = service.createRequest(h, itemEntry, time, emr);
+		
+		return convertDto(r);
+	}
 
 	@PostMapping(value = {"/makeRequest"})
-	public RequestDto makeRequest(@RequestParam(name = "username") String username,
-			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern = "YYYY:MM:DD:HH:mm") Time time,
-			@RequestParam(name = "emerStatus") String emerStatus,
-			@RequestParam(name = "fulfillStatus") String fulfillStatus,
-			@RequestParam(name = "items") List<ItemEntryDto> itemsDto) throws IllegalArgumentException{
-		Hospital h = service.getHospital(username);
-
-		if(h==null) throw new IllegalArgumentException("Cannot find hospital");
-
-		Request r = new Request(h, time, convertEmerEnum(emerStatus));
-		List<ItemEntry> items= new ArrayList<ItemEntry>();
-		ItemEntry i;
-		for(ItemEntryDto item: itemsDto) {
-			i = service.getItemEntry(item.getIeid());
-			items.add(i);
+	public RequestDto makeRequest(
+			@RequestBody SimpleRequestForm form) throws IllegalArgumentException{
+		String hospital = form.getUsername();
+		String timeString = form.getTimeString();
+		List<ItemEntryDto> itemsDto = form.getItemEntries();
+		
+		Time time = java.sql.Time.valueOf(timeString);
+		if( itemsDto == null) {
+			throw new IllegalArgumentException("null items");
 		}
+		Hospital h ;
+
+		h= service.getHospital(hospital);
+		if(h==null) {
+			throw new IllegalArgumentException("Hospital does not exist");
+		}
+		
+		List<ItemEntry> itemEntry = new ArrayList<ItemEntry>();
+		ItemEntry ie;
+		Item i;
+		int count = 0;
+		for(ItemEntryDto ieDto : itemsDto) {
+			ItemDto iDto = ieDto.getItem();
+			
+			i= service.getItemByName(iDto.getName());
+			if(i == null) {
+				i = service.createItem(iDto.getName(),iDto.getDescription());
+			}
+			ie = service.createItemEntry(i, ieDto.getQuantity());
+			count += ieDto.getQuantity();
+			itemEntry.add(ie);
+		}
+		
+		EmergencyStatus emr ;
+		if(count < 5000) {
+			emr = EmergencyStatus.LOW;
+		}else if(count < 20000) {
+			emr = EmergencyStatus.MEDIAN;
+		}else emr = EmergencyStatus.HIGH;
+		
+		Request r = service.createRequest(h, itemEntry, time, emr);
 		return convertDto(r);
 	}
 
@@ -113,13 +191,24 @@ public class Controller {
 		return convertDto(hospital);
 	}
 	
-
 	@PostMapping(value = {"/item/{name}"})
 	public ItemDto createItem(@PathVariable(name = "name") String name, @RequestParam String description) {
 		Item i =service.createItem(name, description);
 		return convertDto(i);
 	}
+	
+	
+	@PostMapping(value = {"/login"})
+	public boolean login(@RequestBody LoginForm loginForm) throws IllegalArgumentException{
+		String username = loginForm.getUsername();
+		String password = loginForm.getPassword();
+		Hospital h = service.getHospital(username);
+		if(h == null) {
+			throw new IllegalArgumentException("User Does Not Exist");
+		}
+		return password.equals(h.getPassword());
 
+	}
 	
 	// Tool methods
 	private String convertEmerEnum(EmergencyStatus s) {
@@ -174,7 +263,7 @@ public class Controller {
 		List<ItemEntry> ies = r.getItems();
 		List<ItemEntryDto> ieDtos = new ArrayList<ItemEntryDto>();
 		for (ItemEntry ie: ies) {
-			ieDtos.add(convertpDto(ie));
+			ieDtos.add(convertDto(ie));
 		}
 
 		return new RequestDto(r.getRid(),r.getPosttime(),convertEmerEnum(r.getEmerStatus()),
@@ -182,15 +271,19 @@ public class Controller {
 	}
 
 	private ItemEntryDto convertpDto(ItemEntry ie) {
-		return new ItemEntryDto(ie.getIeid(), ie.getQuantity());
+//		return new ItemEntryDto(ie.getIeid(), ie.getQuantity());
+		return new ItemEntryDto( ie.getQuantity());
+
 	}
 
 	private ItemDto convertDto(Item i) {
-		return new ItemDto(i.getIid(),i.getName(),i.getDescription());
+		return new ItemDto(i.getName(),i.getDescription());
 	}
 
 	private ItemEntryDto convertDto(ItemEntry ie) {
-		return new ItemEntryDto(ie.getIeid(), ie.getQuantity(), convertDto(ie.getItem()), convertDto(ie.getRequest()));
+//		return new ItemEntryDto(ie.getIeid(), ie.getQuantity(), convertDto(ie.getItem()));
+		return new ItemEntryDto(ie.getQuantity(), convertDto(ie.getItem()));
+
 	}
 
 	private HospitalDto convertDto(Hospital h) {
@@ -207,6 +300,5 @@ public class Controller {
 		return new RequestDto(r.getRid(),r.getPosttime(),convertEmerEnum(r.getEmerStatus()),
 				convertFulfEnum(r.getFulfillStatus()));
 	}
-
 
 }

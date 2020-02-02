@@ -11,13 +11,11 @@ public class ItemEntry {
 	private long ieid;
 	private Item item;
 	private int quantity;
-	private Request request;
 	
-	public ItemEntry(Item item, int quantity, Request request) {
+	public ItemEntry(Item item, int quantity) {
 		super();
 		this.ieid = new Random().nextLong();
 		this.item = item;
-		this.request = request;
 		this.quantity = quantity;
 	}
 	
@@ -50,14 +48,5 @@ public class ItemEntry {
 		this.ieid=id;
 	}
 	
-	@ManyToOne(optional = false)
-	public Request getRequest() {
-		return request;
-	}
-
-	public void setRequest(Request request) {
-		this.request = request;
-	}
-
 	
 }

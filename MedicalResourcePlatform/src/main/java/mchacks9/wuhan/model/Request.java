@@ -31,7 +31,7 @@ public class Request {
 	
 	public Request(Hospital hospital, Time posttime, EmergencyStatus emerStatus) {
 		super();
-		this.rid = new Random(124).nextLong();
+		this.rid = new Random().nextLong();
 		this.hospital = hospital;
 		this.posttime = posttime;
 		this.emerStatus = emerStatus;

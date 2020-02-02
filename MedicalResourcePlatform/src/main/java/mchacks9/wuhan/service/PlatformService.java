@@ -83,11 +83,11 @@ public class PlatformService {
 	}
 	
 	@Transactional
-	public ItemEntry createItemEntry(Item item, int quantity, Request request) {
-		if(item == null || quantity <0 || request == null) {
+	public ItemEntry createItemEntry(Item item, int quantity) {
+		if(item == null || quantity <0) {
 			throw new IllegalArgumentException("Field invalid");
 		}
-		ItemEntry i = new ItemEntry(item, quantity, request);
+		ItemEntry i = new ItemEntry(item, quantity);
 		ieRepository.save(i);
 		return i;
 	}
@@ -127,5 +127,10 @@ public class PlatformService {
 			resultList.add(t);
 		}
 		return resultList;
+	}
+
+	public Item getItemByName(String name) {
+		if(name == null || name.trim().length()==0) throw new IllegalArgumentException("Empty Name");
+		return iRepository.findByName(name);
 	}
 }

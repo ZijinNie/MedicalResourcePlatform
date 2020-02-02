@@ -13,12 +13,12 @@ public class Item {
 	
 	public Item(String name, String description) {
 		super();
-		this.iid = new Random(658).nextLong();
+		this.iid = new Random().nextLong();
 		this.name = name;
 		this.description = description;
 	}
 	public Item() {
-		this.iid = new Random(658).nextLong();
+		this.iid = new Random().nextLong();
 
 	}
 	
