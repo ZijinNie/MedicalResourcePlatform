@@ -1,0 +1,16 @@
+package mchacks9.wuhan.controller;
+
+import java.sql.Time;
+import java.util.List;
+
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import mchacks9.wuhan.dto.ItemEntryDto;
+
+public class SimpleRequestForm {
+	private String username,
+	private String timeString,
+	private String emerStatus,
+	private List<ItemEntryDto> itemsDto;
+}

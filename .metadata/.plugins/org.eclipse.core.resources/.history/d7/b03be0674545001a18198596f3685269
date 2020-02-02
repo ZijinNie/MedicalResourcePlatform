@@ -1,0 +1,128 @@
+package mchacks9.wuhan.service;
+
+import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import mchacks9.wuhan.dao.HospitalRepository;
+import mchacks9.wuhan.dao.ItemEntryRepository;
+import mchacks9.wuhan.dao.ItemRepository;
+import mchacks9.wuhan.dao.RequestRepository;
+import mchacks9.wuhan.model.Hospital;
+import mchacks9.wuhan.model.Item;
+import mchacks9.wuhan.model.ItemEntry;
+import mchacks9.wuhan.model.Request;
+import mchacks9.wuhan.satausEnum.EmergencyStatus;
+
+@Service
+public class PlatformService {
+	
+	@Autowired
+	HospitalRepository hRepository;
+	
+	@Autowired
+	ItemRepository iRepository;
+	
+	@Autowired
+	ItemEntryRepository ieRepository;
+	
+	@Autowired
+	RequestRepository rRepository;
+	
+	@Transactional
+	public Hospital createHospital(String username, String password, String name, String city,String state, String strAddr,  String description, String contact) {
+		if(username == null || username.trim().length() == 0 ||password == null || password.trim().length() == 0 ||name == null || name.trim().length() == 0) {
+			throw new IllegalArgumentException("Field cannot be null");
+		}else if(hRepository.existsByName(name) || hRepository.existsByUsername(username)) {
+			throw new IllegalArgumentException("Hospital already exist");
+		}
+		
+		Hospital h = new Hospital(username, password, name, city, state, strAddr,description,contact);
+		hRepository.save(h);
+		return h;
+	}
+	
+	@Transactional
+	public Hospital getHospital(String username) {
+		if(username == null || username.trim().length() == 0 ) {
+			throw new IllegalArgumentException("Field cannot be null");
+		}
+		Hospital h = hRepository.findByUsername(username);
+		return h;
+	}
+	
+	@Transactional
+	public Hospital getHospitalByName(String name) {
+		if(name == null || name.trim().length() == 0 ) {
+			throw new IllegalArgumentException("Field cannot be null");
+		}
+		Hospital h = hRepository.findByName(name);
+		return h;
+	}
+	
+	@Transactional
+	public ItemEntry getItemEntry(long id) {
+		ItemEntry ie = ieRepository.findByIeid(id);
+		return ie;
+	}
+	
+	@Transactional
+	public Request createRequest(Hospital h, List<ItemEntry> items, Time time, EmergencyStatus eStatus) {
+		if(h == null || items==null || time == null || eStatus == null) {
+			throw new IllegalArgumentException("Field cannot be null");
+		}
+		Request r = new Request(h, time, eStatus);
+		r.setItems(items);
+		rRepository.save(r);
+		return r;
+	}
+	
+	@Transactional
+	public ItemEntry createItemEntry(Item item, int quantity, Request request) {
+		if(item == null || quantity <0 || request == null) {
+			throw new IllegalArgumentException("Field invalid");
+		}
+		ItemEntry i = new ItemEntry(item, quantity, request);
+		ieRepository.save(i);
+		return i;
+	}
+	
+	@Transactional
+	public Item createItem(String name, String description) {	
+		if(name==null || description == null) {
+			throw new IllegalArgumentException("Field invalid");
+		}
+		Item i = new Item(name, description);
+		iRepository.save(i);
+		return i;
+	}
+
+	public List<Request> getAllRequests() {
+		return toList(rRepository.findAll());
+	}
+	
+	public List<Hospital> getAllHospitals() {
+		return toList(hRepository.findAll());
+	}
+	
+	public List<Item> getAllItems() {
+		return toList(iRepository.findAll());
+	}
+	
+	public List<ItemEntry> getAllItemEntrys() {
+		return toList(ieRepository.findAll());
+	}
+	
+	private <T> List<T> toList(Iterable<T> iterable) {
+		List<T> resultList = new ArrayList<T>();
+		for (T t : iterable) {
+			resultList.add(t);
+		}
+		return resultList;
+	}
+}
